@@ -1,19 +1,64 @@
 const axios = require("axios")
 
+
 module.exports = {
     search: function(req,res,next){
+        let ownedIngr = req.query.search.split(",")
+        let regexIngr = ""
+
+        if(ownedIngr.length === 1){
+            regexIngr += `(${ownedIngr[0]})`
+        }else{
+
+            for(let i = 0; i < ownedIngr.length; i++){
+                if(i == 0){
+                    regexIngr += `(${ownedIngr[i]}|`
+                } else if(i === ownedIngr.length-1){
+                    regexIngr += `${ownedIngr[i]})`
+                } else{
+                    regexIngr += `${ownedIngr[i]}|`
+                }
+            }
+        }
+
+        console.log(regexIngr)
         axios({
             method:'get',
-            url:'http://www.recipepuppy.com/api/?i=rice '
+            url:`https://api.edamam.com/search?q=${req.query.search}&app_id=${process.env.applicationId}&app_key=${process.env.applicationKey} `
           })
             .then((response) => {
-                console.log("masuk then")
-                console.log(response)
-              res.status(200).json(response.data)
+                let recipe = []
+                // console.log(response.data.hits)
+                response.data.hits.forEach(element => {
+                    // console.log(element.recipe.cautions)
+                    // console.log(element.recipe.healthLabels)
+                    // console.log(element.recipe.dietLabels)
+                    let temp = {
+                        title: element.recipe.label,
+                        availIngred: [],
+                        unavailIngred: [],
+                        imageUrl: element.recipe.image,
+                        calories: element.recipe.calories,
+                        url: element.recipe.url,
+                        dietTags: element.recipe.dietLabels,
+                        healthTags: element.recipe.healthLabels,
+                    }
+                    element.recipe.ingredientLines.forEach(ingredient =>{
+                        let searchQuery = new RegExp(regexIngr, "gi")
+                        if(ingredient.match(searchQuery)){
+                            temp.availIngred.push(ingredient)
+                        }else{
+                            temp.unavailIngred.push(ingredient)
+                        }
+                    })
+                    recipe.push(temp)
+                });
+                // console.log(recipe)
+
+                  res.status(200).json(recipe)
             })
             .catch((err) =>{
-                console.log("masuk catch")
-                res.status(400).json({err: err.response})
+                res.send(err)
             })
     }
 }
