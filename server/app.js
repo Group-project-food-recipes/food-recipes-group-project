@@ -6,9 +6,16 @@ var logger = require('morgan');
 var cors = require('cors')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var recipesRouter = require('./routes/recipes');
 var app = express();
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/food-recipes');
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  // we're connected!
+});
 
 
 app.use(cors())
@@ -18,6 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use("/recipes", recipesRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
