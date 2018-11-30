@@ -1,4 +1,6 @@
 var mapJson = [];
+var mapDetails = []
+
 $.ajax({
   method: "GET",
   url: "http://localhost:3000/maps",
@@ -7,11 +9,12 @@ $.ajax({
 })
   .done(function(result) {
     let arrMaps = result.results
-      
+    console.log(arrMaps)
     arrMaps.forEach(item => {
       let lat = item.geometry.location.lat
       let lng = item.geometry.location.lng
       
+      mapDetails.push([item.name, item.vicinity])
       let arr = [lat,lng]
       mapJson.push(arr)
     })
@@ -35,9 +38,15 @@ function initMap() {
 
   for (var i = 0; i < mapJson.length; i++) {
     var marker = new google.maps.Marker({
-      position: new google.maps.LatLng(mapJson[i][0], mapJson[i][1])
+      position: new google.maps.LatLng(mapJson[i][0], mapJson[i][1]),
+      name: mapDetails[i]
     });
+
+    
     marker.setMap(map)
+    marker.addListener('click', function() {
+      alert(this.name[0] + ": " + this.name[1]);
+    });
   }
     
 }
