@@ -22,7 +22,9 @@ $.ajax({
     console.log(error)
   })
 
-function initMap() {
+  console.log(mapDetails)
+
+function initMap(){
   if(!!navigator.geolocation) {
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 16,
