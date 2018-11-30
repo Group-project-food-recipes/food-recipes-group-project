@@ -43,6 +43,7 @@ module.exports = {
             firstName: req.body.firstName,
             lastName: req.body.lastName
         }, function(err,users){
+
             if(err){
                 res.status(400).json(err)
             }else{
