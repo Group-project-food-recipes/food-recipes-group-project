@@ -28,11 +28,11 @@ module.exports = {
           })
             .then((response) => {
                 let recipe = []
-                console.log("abis api recipe")
+                // console.log(response.data.hits[0])
+                // res.json(response.data.hits[0])
+
                 response.data.hits.forEach(element => {
-                    // console.log(element.recipe.cautions)
-                    // console.log(element.recipe.healthLabels)
-                    // console.log(element.recipe.dietLabels)
+                    
                     let temp = {
                         title: element.recipe.label,
                         availIngred: [],
@@ -42,6 +42,8 @@ module.exports = {
                         url: element.recipe.url,
                         dietTags: element.recipe.dietLabels,
                         healthTags: element.recipe.healthLabels,
+                        totalTime: element.recipe.totalTime,
+                        nutrients: element.recipe.digest
                     }
                     element.recipe.ingredientLines.forEach(ingredient =>{
                         let searchQuery = new RegExp(regexIngr, "gi")
@@ -59,7 +61,7 @@ module.exports = {
                     return a.unavailIngred.length - b.unavailIngred.length 
                   });
 
-                console.log(recipe)
+                // console.log(recipe)
 
                   res.status(200).json(recipe)
             })
