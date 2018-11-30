@@ -4,17 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-
-    <!-- <link rel="stylesheet" href="css/linearicons.css"> -->
-    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/bootstrap.css">
-    <!-- <link rel="stylesheet" href="css/magnific-popup.css">
-    <link rel="stylesheet" href="css/nice-select.css">					
-    <link rel="stylesheet" href="css/animate.min.css">
-    <link rel="stylesheet" href="css/owl.carousel.css"> -->
     <link rel="stylesheet" href="css/main.css">
-
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <meta name="google-signin-client_id" content="22604769740-maf2eq1ma41rfaj5i8id6vbb5nulqt8k.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <title>Document</title>
 </head>
 <body>
@@ -36,77 +33,235 @@
             </div>
         </header><!-- #header -->
 
-        <!-- start banner Area -->
-        <section class="banner-area relative" id="home">
-                <div class="container">
-                    <div class="row fullscreen d-flex align-items-center justify-content-start">
-                        <div class="banner-content col-lg-8 col-md-12">
-                            <h4 class="text-white text-uppercase">Wide Options of Choice</h4>
-                            <h1>
-                                Delicious Receipes					
-                            </h1>
-                            <p class="text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temp <br> or incididunt ut labore et dolore magna aliqua. Ut enim ad minim.
-                            </p>
-                            <a href="#" class="primary-btn header-btn text-uppercase">Check Our Menu</a>
-                        </div>												
+        <div class="login-wrap">
+            <div class="login-html">
+                <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
+                <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
+                <div class="login-form">
+                    <div class="sign-in-htm">
+                        <form id="login"  method="POST">
+                            <div class="group">
+                                <label for="user" class="label">email</label>
+                                <input id="email" type="text" class="input">
+                            </div>
+                            <div class="group">
+                                <label for="pass" class="label">Password</label>
+                                <input id="password" type="password" class="input" data-type="password">
+                            </div>
+                            <div class="group">
+                                <input id="check" type="checkbox" class="check" checked>
+                                <label for="check"><span class="icon"></span> Keep me Signed in</label>
+                            </div>
+                            <div class="group">
+                                <input type="submit" class="button" value="Sign In">
+                            </div>
+                            <div class="hr"></div>
+                            <div class="foot-lnk">
+                                <div class="g-signin2" data-onsuccess="onSignIn"> </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="sign-up-htm">
+                        <form id="signup" method="POST">
+                            <div class="group">
+                                <label for="email" class="label">Email</label>
+                                <input id="email" type="email" class="input">
+                            </div>
+                            <div class="group">
+                                <label for="password" class="label">Password</label>
+                                <input id="password" type="password" class="input" data-type="password">
+                            </div>
+                            <div class="group">
+                                    <label for="pass" class="label">First Name</label>
+                                    <input id="first_name" type="text" class="input">
+                            </div>
+                            <div class="group">
+                                    <label for="pass" class="label">Last Name</label>
+                                    <input id="last_name" type="text" class="input" >
+                            </div>
+                            <div class="group">
+                                <input type="submit" class="button" value="Sign Up">
+                            </div>
+                            <div class="hr"></div>
+                            <div class="foot-lnk">
+                                <label for="tab-1">Already Member?</a>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </section>
-            <!-- End banner Area -->	
+            </div>
+        </div>
 
-            <!-- Start top-dish Area -->
-            <section class="top-dish-area section-gap" id="dish">
-                <div class="container">
-                    <div class="row d-flex justify-content-center">
-                        <div class="menu-content pb-60 col-lg-8">
-                            <div class="title text-center">
-                                <h1 class="mb-10">Our Top Rated Dishes</h1>
-                                <p>Who are in extremely love with eco friendly system.</p>
-                            </div>
+        <!-- start banner Area -->
+        <div class="container" id="main-page">
+            <section class="banner-area relative" id="home">
+                    <div class="container">
+                        <div class="row fullscreen d-flex align-items-center justify-content-start">
+                            <div class="banner-content col-lg-8 col-md-12">
+                                <h4 class="text-white text-uppercase">Wide Options of Choice</h4>
+                                <h1>
+                                    Delicious Receipes					
+                                </h1>
+                                <p class="text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temp <br> or incididunt ut labore et dolore magna aliqua. Ut enim ad minim.
+                                </p>
+                                <div class="form-group has-search">
+                                    <span class="fa fa-search form-control-feedback"></span>
+                                    <input type="text" class="form-control" placeholder="Search">
+                                </div>
+                            </div>												
                         </div>
-                    </div>						
-                    <div class="row">
-                        <div class="single-dish col-lg-4">
-                            <div class="thumb">
-                                <img class="img-fluid"  src="img/d1.jpg" alt="">
-                            </div>
-                            <h4 class="text-uppercase pt-20 pb-20">Bread Fruit Cheese Sandwich</h4>
-                            <p>
-                                inappropriate behavior is often laughed off as “boys will be boys,” women face higher conduct women face higher conduct.
-                            </p>
-                        </div>
-                        <div class="single-dish col-lg-4">
-                            <div class="thumb">
-                                <img class="img-fluid"  src="img/d2.jpg" alt="">
-                            </div>
-                            <h4 class="text-uppercase pt-20 pb-20">Beef Cutlet with Spring Onion</h4>
-                            <p>
-                                inappropriate behavior is often laughed off as “boys will be boys,” women face higher conduct women face higher conduct.
-                            </p>
-                        </div>
-                        <div class="single-dish col-lg-4">
-                            <div class="thumb">
-                                <img class="img-fluid"  src="img/d3.jpg" alt="">
-                            </div>
-                            <h4 class="text-uppercase pt-20 pb-20">Meat with sauce & Vegetables</h4>
-                            <p>
-                                inappropriate behavior is often laughed off as “boys will be boys,” women face higher conduct women face higher conduct.
-                            </p>
-                        </div>												
                     </div>
-                </div>	
-            </section>
+                </section>
+                <!-- End banner Area -->	
+    
+                <!-- Start top-dish Area -->
+                <section class="top-dish-area section-gap" id="dish">
+                    <div class="container">
+                        <div class="row d-flex justify-content-center">
+                            <div class="menu-content pb-60 col-lg-8">
+                                <div class="title text-center">
+                                    <h1 class="mb-10">Our Top Rated Dishes</h1>
+                                    <p>Who are in extremely love with eco friendly system.</p>
+                                </div>
+                            </div>
+                        </div>						
+                        <div class="row">
+                            <div class="single-dish col-lg-4">
+                                <div class="thumb">
+                                    <img class="img-fluid"  src="img/d1.jpg" alt="">
+                                </div>
+                                <h4 class="text-uppercase pt-20 pb-20">Bread Fruit Cheese Sandwich</h4>
+                                <p>
+                                    inappropriate behavior is often laughed off as “boys will be boys,” women face higher conduct women face higher conduct.
+                                </p>
+                            </div>
+                            <div class="single-dish col-lg-4">
+                                <div class="thumb">
+                                    <img class="img-fluid"  src="img/d2.jpg" alt="">
+                                </div>
+                                <h4 class="text-uppercase pt-20 pb-20">Beef Cutlet with Spring Onion</h4>
+                                <p>
+                                    inappropriate behavior is often laughed off as “boys will be boys,” women face higher conduct women face higher conduct.
+                                </p>
+                            </div>
+                            <div class="single-dish col-lg-4">
+                                <div class="thumb">
+                                    <img class="img-fluid"  src="img/d3.jpg" alt="">
+                                </div>
+                                <h4 class="text-uppercase pt-20 pb-20">Meat with sauce & Vegetables</h4>
+                                <p>
+                                    inappropriate behavior is often laughed off as “boys will be boys,” women face higher conduct women face higher conduct.
+                                </p>
+                            </div>												
+                        </div>
+                    </div>	
+                </section>
+            </div>
             <!-- End top-dish Area -->
     
 
     <script>
-        checklogin()
+        $(document).ready( function(evet){
+			checklogin()
+			$("#login").on("submit", function(event){
+				event.preventDefault();
+				var data ={
+					email : $('#email').val(),
+					password : $('#password').val()
+				}
+				$.ajax({
+					type: 'POST',
+					url: 'http://localhost:3000/login/',
+					dataType: 'json',
+					data: data
+				})
+				.done(function(dataLogin){
+					console.log(dataLogin)
+                    localStorage.setItem('token', dataLogin.token)
+                    checklogin()
+				})
+				.fail(function(error){
+                    console.log(error)
+                    alert(error.responseText)
+				})
+            })
+            $("#signup").on("submit", function(){
+                event.preventDefault();
+                var data ={
+					email : $('#email').val(),
+                    password : $('#password').val(),
+                    firstName: $('#first_name').val(),
+                    lastName: $('#lastName').val()
+                }
+                $.ajax({
+					type: 'POST',
+					url: 'http://localhost:3000/register/',
+					dataType: 'json',
+					data: data
+				})
+				.done(function(data){
+                    alert(data.msg)
+                    window.location.href = '/index.html';
+				})
+				.fail(function(error){
+					console.log(error)
+				})
+            })
+            $(".logout").click(function(event){
+                event.preventDefault();
+                signOut()
+                logOut()
+            })
+            $(".login").click(function(event){
+                event.preventDefault();
+            })
+		})
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                console.log('User signed out.');
+			});
+        }
+        function onSignIn(googleUser) {
+			var id_token = googleUser.getAuthResponse().id_token;
+			statusChangeCallback(id_token)	
+        }
+
+        function statusChangeCallback(token){
+            $.ajax({
+                method: "POST",
+                url: 'http://localhost:3000/googlesign',
+                data: {token: token}
+            })
+            .done(function(dataLogin) {
+				console.log(dataLogin)
+                localStorage.setItem('token', dataLogin.token)
+                checklogin()
+            })
+            .fail(function(error){
+                console.log(error)
+            })
+        }
+
+        function logOut(){
+            localStorage.removeItem('token');
+
+            checklogin()
+        }   
+
         function checklogin(){
             if(localStorage.getItem("token")){
+                $('#header').show()
+                $('#main-page').show()
+                $('.login').hide()
+                $('.login-wrap').hide()
                 console.log("anda sudah login")
             }else{
-                window.location.href = '/login.html';
+                $('#header').hide()
+                $('.login').show()
+                $('.login-wrap').show()
+                $('#main-page').hide()
             }
         }
     </script>	

@@ -12,17 +12,21 @@ module.exports = {
                 res.status(400).json(err.message)
             }else{
                 if(user){
-                    if(compare(req.body.password, user.password)){
-                        var token = jwt.sign({
-                            id: user._id, 
-                            email: user.email
-                        }, process.env.secret);
-                        res.status(200).json({
-                            msg : "user login", 
-                            token: token
-                        })
+                    if(user.provider !== 'none'){
+                        res.status(400).json("Please login using Google")
                     }else{
-                        res.status(400).json("wrong password")
+                        if(compare(req.body.password, user.password)){
+                            var token = jwt.sign({
+                                id: user._id, 
+                                email: user.email
+                            }, process.env.secret);
+                            res.status(200).json({
+                                msg : "user login", 
+                                token: token
+                            })
+                        }else{
+                            res.status(400).json("wrong password")
+                        }
                     }
                 }else{
                     res.status(400).json({
@@ -43,7 +47,7 @@ module.exports = {
                 res.status(400).json(err)
             }else{
                 res.status(200).json({
-                    msg : "User Created",
+                    msg : "Succesfull!! User Created",
                     data: users
                 })
             }
