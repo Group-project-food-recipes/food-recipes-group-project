@@ -54,6 +54,7 @@ module.exports = {
         })
     },
     loginGoogle: function(req, res, next){
+        console.log("masuk controller")
         axios.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${req.body.token}`)
         .then(function (response) {
             let data = {

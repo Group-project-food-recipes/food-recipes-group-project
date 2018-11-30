@@ -229,6 +229,7 @@
         }
 
         function statusChangeCallback(token){
+            console.log("masuk callback")
             $.ajax({
                 method: "POST",
                 url: 'http://localhost:3000/googlesign',
