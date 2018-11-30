@@ -14,6 +14,21 @@
     <meta name="google-signin-client_id" content="22604769740-maf2eq1ma41rfaj5i8id6vbb5nulqt8k.apps.googleusercontent.com">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <title>Document</title>
+    <style>
+        #overflowid{
+            font-family: 'Courier New', Courier, monospace;
+            overflow: auto;
+            height: 1000px;
+        }
+        #list-recipe{
+            font-family: 'Courier New', Courier, monospace;
+        }
+        #fact {
+            font-family: 'Courier New', Courier, monospace;
+            background:rgba(185, 129, 55, 0.9);
+            padding: 15px;
+        }
+    </style>
 </head>
 <body>
         <header id="header" id="home">
@@ -101,10 +116,9 @@
                             <div class="banner-content col-lg-8 col-md-12">
                                 <h4 class="text-white text-uppercase">Wide Options of Choice</h4>
                                 <h1>
-                                    Delicious Receipes					
+                                    Cook My Receipes					
                                 </h1>
-                                <p class="text-white">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temp <br> or incididunt ut labore et dolore magna aliqua. Ut enim ad minim.
+                                <p class="text-white" id="fact">
                                 </p>
                                 <div class="form-group has-search">
                                     <form id="ingredientForm">
@@ -117,9 +131,9 @@
                 </section>
                 <!-- End banner Area -->
                 <div id="list-recipe" class="container">
-                    SOMETHING HERE
                     <div class="row">
-                            <div class="col-5">
+                            <div id="overflowid" class="col-5">
+                                <h3> Recipes List</h3>
                                 <div id="recipeList"></div>
                             </div>
                             <div class="col-7">
@@ -128,12 +142,6 @@
                             </div>
                     </div>
                 </div>	
-                <div class="container">
-                    Nearby Supermarket
-                    <div id="map">
-                    </div>
-                </div>
-
     
                 <!-- Start top-dish Area -->
                 <section class="top-dish-area section-gap" id="dish">
@@ -184,7 +192,6 @@
     <script>
         $(document).ready( function(evet){
             checklogin()
-            showMap()
 			$("#login").on("submit", function(event){
 				event.preventDefault();
 				var data ={
@@ -239,14 +246,45 @@
             })
             $("#ingredientForm").submit(function (event){
                 event.preventDefault()
+                $("#list-recipe").show()
                 console.log("clicked")
                 let ingredient = $("#ingredients").val()
                 // console.log(ingredient)
                 sendIngQuer(ingredient)
             })
-
-            
+     
         })
+
+        function funfact(){
+            $.ajax({
+                method: "GET",
+                url: "http://localhost:3000/facts",
+                async: false,
+                dataType: "json",
+            })
+            .done(function(result) {
+                // console.log(result)
+                // console.log(result.product.product_name)
+                // console.log(result.product.nutriments)
+                $("#fact").html(`
+                    <p>~~NUTRIMENTS FUN FACT~~ 
+                        <br> 
+                        ${result.product.product_name}:
+                        <br>
+                        Protein: ${result.product.nutriments.proteins_value}
+                        <br>
+                        Sugar: ${result.product.nutriments.sugars_value}
+                        <br>
+                        Vitamin A: ${result.product.nutriments["vitamin-a"]}
+                        <br>
+                        Vitamin C: ${result.product.nutriments["vitamin-c"]}
+                    </p>
+                `)
+            })
+            .fail(function(error) {
+                console.log(error)
+            })
+        }
 
         function videoList(param) {
             $.ajax({
@@ -298,7 +336,6 @@
                         <h5> ${Math.round(result[i].calories)} Cal</h5>
                     </div>
                     `)
-                    // console.log(result[i].title)
                 }
                 // console.log(allRecipe)
                 $(".recipe").click(function(event){
@@ -308,7 +345,6 @@
                     console.log(recipeTitle)
                     console.log($(this))
                     let query = `recipe ${recipeTitle}`
-                    console.log(query)
                     displayVideo(query)
                 })
             })
@@ -340,6 +376,10 @@
                 <h5> Things you should buy </h5>
                 <ul id="must-buy">  
                 </ul>
+                <br>
+                <br>
+                <br>
+                <a href="http://localhost:8080/google-map.html" target="_blank"> Find Nearby Store</a> 
             `)
             currrentRecipe.availIngred.forEach(element => {
                 $("#available-ingred").append(`<li> ${element} </li>`)
@@ -390,6 +430,8 @@
                 $('#main-page').show()
                 $('.login').hide()
                 $('.login-wrap').hide()
+                $("#list-recipe").hide()
+                funfact()
                 console.log("anda sudah login")
             }else{
                 $('#header').hide()
@@ -398,67 +440,8 @@
                 $('#main-page').hide()
             }
         }
-        
-        var mapJson = [];
-        var mapDetails = []
-
-        function showMap(){
-            $.ajax({
-            method: "GET",
-            url: "http://localhost:3000/maps",
-            async: false,
-            dataType: "json",
-            })
-            .done(function(result) {
-                let arrMaps = result.results
-                arrMaps.forEach(item => {
-                let lat = item.geometry.location.lat
-                let lng = item.geometry.location.lng
-                
-                mapDetails.push([item.name, item.vicinity])
-                let arr = [lat,lng]
-                mapJson.push(arr)
-                })
-            })
-            .fail(function(error) {
-                console.log(error)
-            })
-        }
-        console.log(mapDetails)
-
-        function initMap(){
-        if(!!navigator.geolocation) {
-            var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 16,
-            mapTypeId: 'terrain'
-            });
-
-            navigator.geolocation.getCurrentPosition(function(position) {
-            var geolocate = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            map.setCenter(geolocate);
-            });
-        }
-
-        for (var i = 0; i < mapJson.length; i++) {
-            var marker = new google.maps.Marker({
-            position: new google.maps.LatLng(mapJson[i][0], mapJson[i][1]),
-            name: mapDetails[i]
-            });
-
-            marker.setMap(map)
-            marker.addListener('click', function() {
-            alert(this.name[0] + ": " + this.name[1]);
-            });
-        }
-            
-        }
-    
-    
     </script>	
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgA6aZLyWwO7JJSiP2bpbHgIvgNO4r0Mg&callback=initMap"></script>
-    
     <script src="js/superfish.min.js"></script>	
     <script src="js/jquery.magnific-popup.min.js"></script>		
     <script src="js/main.js"></script>	
