@@ -50,7 +50,7 @@
                 `)
                 // console.log(result[i].title)
             }
-            console.log(allRecipe)
+            // console.log(allRecipe)
             $(".recipe").click(function(event){
                 event.preventDefault()
                 dispDet($(this).attr("id"))
@@ -64,16 +64,19 @@
     }
         function dispDet(id){
             $("#recipeDetail").html("<span></span>")
+            console.log(id)
 
-            let currrentRecipe = allRecipe.filter(element =>{
-                if(element.id === id){
-                    return true
+            let currrentRecipe 
+            allRecipe.map(element =>{
+                if(element.id === Number(id)){
+                    currrentRecipe = element
                 }
+                // console.log(element.id, id)
             })
 
             console.log(currrentRecipe)
             
-            $("#recipeDetail").append(`    
+            $("#recipeDetail").append(` `   
             )
         }
 </script>
