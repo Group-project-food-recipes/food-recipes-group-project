@@ -9,7 +9,6 @@ $.ajax({
 })
   .done(function(result) {
     let arrMaps = result.results
-    console.log(arrMaps)
     arrMaps.forEach(item => {
       let lat = item.geometry.location.lat
       let lng = item.geometry.location.lng
