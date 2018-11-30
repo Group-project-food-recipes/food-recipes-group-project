@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
-	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <meta name="google-signin-client_id" content="22604769740-maf2eq1ma41rfaj5i8id6vbb5nulqt8k.apps.googleusercontent.com">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <title>Document</title>
@@ -106,14 +107,33 @@
                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temp <br> or incididunt ut labore et dolore magna aliqua. Ut enim ad minim.
                                 </p>
                                 <div class="form-group has-search">
-                                    <span class="fa fa-search form-control-feedback"></span>
-                                    <input type="text" class="form-control" placeholder="Search">
+                                    <form id="ingredientForm">
+                                        <span class="fa fa-search form-control-feedback"></span>
+                                        <input id="ingredients"type="text" name="ingredient" class="form-control" placeholder="Search">
                                 </div>
                             </div>												
                         </div>
                     </div>
                 </section>
-                <!-- End banner Area -->	
+                <!-- End banner Area -->
+                <div id="list-recipe" class="container">
+                    SOMETHING HERE
+                    <div class="row">
+                            <div class="col-5">
+                                <div id="recipeList"></div>
+                            </div>
+                            <div class="col-7">
+                                <div id="recipeDetail"></div>
+                                <div id="recipeVideo"></div>
+                            </div>
+                    </div>
+                </div>	
+                <div class="container">
+                    Nearby Supermarket
+                    <div id="map">
+                    </div>
+                </div>
+
     
                 <!-- Start top-dish Area -->
                 <section class="top-dish-area section-gap" id="dish">
@@ -163,7 +183,8 @@
 
     <script>
         $(document).ready( function(evet){
-			checklogin()
+            checklogin()
+            showMap()
 			$("#login").on("submit", function(event){
 				event.preventDefault();
 				var data ={
@@ -216,13 +237,126 @@
             $(".login").click(function(event){
                 event.preventDefault();
             })
-		})
+            $("#ingredientForm").submit(function (event){
+                event.preventDefault()
+                console.log("clicked")
+                let ingredient = $("#ingredients").val()
+                // console.log(ingredient)
+                sendIngQuer(ingredient)
+            })
+
+            
+        })
+
+        function videoList(param) {
+            $.ajax({
+                method: 'get',
+                url: `http://localhost:3000/youtube/:${param}`,
+            })
+            .done(data => {
+                console.log(data)
+                $("#recipeVideo").append(`<iframe id="existing-iframe-example"
+                width="640" height="360"
+                src="https://www.youtube.com/embed/${data.items[0].id.videoId}?enablejsapi=1"
+                frameborder="0"
+                style="border: solid 4px #37474F"></iframe>`)
+            })
+            .fail(err => {
+                console.log(err)
+            })
+        }
+
+        function displayVideo(search){
+            $("#recipeVideo").html("<span></span>")
+            $.ajax({
+            method: "POST",
+            url: 'http://localhost:3000/youtube',
+            data: {
+                search: search
+            }
+            })
+            .done(param => {
+                console.log(param)
+                videoList(param.params)
+            })
+        }
+        
+        function sendIngQuer(query){
+            $("#recipeList").html(`<span></span>`)
+            $.ajax({
+                type: "GET",
+                url: `http://www.localhost:3000/recipes?search=${query}`,
+            })
+            .done(function(result){
+                allRecipe = result
+                for(let i = 0; i < result.length; i++){
+                    allRecipe[i].id = i+1
+                    $("#recipeList").append(`
+                    <div id="${result[i].id}" class="border recipe">
+                        <h4>${result[i].title}</h4>
+                        <img src=${result[i].imageUrl} class="rounded" alt="Cinque Terre"> 
+                        <h5> ${Math.round(result[i].calories)} Cal</h5>
+                    </div>
+                    `)
+                    // console.log(result[i].title)
+                }
+                // console.log(allRecipe)
+                $(".recipe").click(function(event){
+                    event.preventDefault()
+                    dispDet($(this).attr("id"))
+                    let recipeTitle = $(this)[0].innerText
+                    console.log(recipeTitle)
+                    console.log($(this))
+                    let query = `recipe ${recipeTitle}`
+                    console.log(query)
+                    displayVideo(query)
+                })
+            })
+            .fail(function(err){
+                console.log(err)
+            })
+
+        }
+        
+        function dispDet(id){
+            $("#recipeDetail").html("<span></span>")
+            console.log(id)
+
+            let currrentRecipe 
+            allRecipe.map(element =>{
+                if(element.id === Number(id)){
+                    currrentRecipe = element
+                }
+                // console.log(element.id, id)
+            })
+
+            console.log(currrentRecipe)
+            
+            $("#recipeDetail").append(`<h3> ${currrentRecipe.title} </h3> <br>
+                <img src=${currrentRecipe.imageUrl} class="rounded" alt="Cinque Terre"> <br>
+                <h5> Your available ingredients </h5>
+                <ul id="available-ingred">                     
+                </ul>
+                <h5> Things you should buy </h5>
+                <ul id="must-buy">  
+                </ul>
+            `)
+            currrentRecipe.availIngred.forEach(element => {
+                $("#available-ingred").append(`<li> ${element} </li>`)
+            });
+            currrentRecipe.unavailIngred.forEach(element => {
+                $("#must-buy").append(`<li> ${element} </li>`)
+            });
+            
+        }
+
         function signOut() {
             var auth2 = gapi.auth2.getAuthInstance();
             auth2.signOut().then(function () {
                 console.log('User signed out.');
 			});
         }
+        
         function onSignIn(googleUser) {
 			var id_token = googleUser.getAuthResponse().id_token;
 			statusChangeCallback(id_token)	
@@ -265,7 +399,67 @@
                 $('#main-page').hide()
             }
         }
+        
+        var mapJson = [];
+        var mapDetails = []
+
+        function showMap(){
+            $.ajax({
+            method: "GET",
+            url: "http://localhost:3000/maps",
+            async: false,
+            dataType: "json",
+            })
+            .done(function(result) {
+                let arrMaps = result.results
+                arrMaps.forEach(item => {
+                let lat = item.geometry.location.lat
+                let lng = item.geometry.location.lng
+                
+                mapDetails.push([item.name, item.vicinity])
+                let arr = [lat,lng]
+                mapJson.push(arr)
+                })
+            })
+            .fail(function(error) {
+                console.log(error)
+            })
+        }
+        console.log(mapDetails)
+
+        function initMap(){
+        if(!!navigator.geolocation) {
+            var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 16,
+            mapTypeId: 'terrain'
+            });
+
+            navigator.geolocation.getCurrentPosition(function(position) {
+            var geolocate = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            map.setCenter(geolocate);
+            });
+        }
+
+        for (var i = 0; i < mapJson.length; i++) {
+            var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(mapJson[i][0], mapJson[i][1]),
+            name: mapDetails[i]
+            });
+
+            marker.setMap(map)
+            marker.addListener('click', function() {
+            alert(this.name[0] + ": " + this.name[1]);
+            });
+        }
+            
+        }
+    
+    
     </script>	
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgA6aZLyWwO7JJSiP2bpbHgIvgNO4r0Mg&callback=initMap"></script>
+    
     <script src="js/superfish.min.js"></script>	
     <script src="js/jquery.magnific-popup.min.js"></script>		
     <script src="js/main.js"></script>	

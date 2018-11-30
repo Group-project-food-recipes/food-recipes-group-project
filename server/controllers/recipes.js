@@ -66,6 +66,7 @@ module.exports = {
                   res.status(200).json(recipe)
             })
             .catch((err) =>{
+                console.log("masuk")
                 res.send(err)
             })
     }
