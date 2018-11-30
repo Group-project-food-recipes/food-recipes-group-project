@@ -28,7 +28,7 @@ module.exports = {
           })
             .then((response) => {
                 let recipe = []
-                // console.log(response.data.hits)
+                console.log("abis api recipe")
                 response.data.hits.forEach(element => {
                     // console.log(element.recipe.cautions)
                     // console.log(element.recipe.healthLabels)
@@ -53,7 +53,13 @@ module.exports = {
                     })
                     recipe.push(temp)
                 });
-                // console.log(recipe)
+                // sorting by least ammount of unavail Ingredients
+
+                recipe.sort(function(a, b) {
+                    return a.unavailIngred.length - b.unavailIngred.length 
+                  });
+
+                console.log(recipe)
 
                   res.status(200).json(recipe)
             })
