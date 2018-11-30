@@ -8,6 +8,9 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var recipesRouter = require('./routes/recipes');
 var youtubeRouter = require('./routes/youtube');
+var factsRouter = require('./routes/facts')
+
+var mapRouter = require('./routes/map')
 var app = express();
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/food-recipes');
@@ -28,6 +31,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use("/recipes", recipesRouter)
 app.use("/youtube", youtubeRouter);
+app.use("/maps", mapRouter)
+app.use("/facts", factsRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

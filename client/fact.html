@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="fact"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $.ajax({
+            method: "GET",
+            url: "http://localhost:3000/facts",
+            async: false,
+            dataType: "json",
+        })
+        .done(function(result) {
+            // console.log(result)
+            // console.log(result.product.product_name)
+            // console.log(result.product.nutriments)
+            $("#fact").html(`
+                <p>~~NUTRIMENTS FUN FACT~~ 
+                    <br> 
+                    ${result.product.product_name}:
+                    <br>
+                    Protein: ${result.product.nutriments.proteins_value}
+                    <br>
+                    Sugar: ${result.product.nutriments.sugars_value}
+                    <br>
+                    Vitamin A: ${result.product.nutriments["vitamin-a"]}
+                    <br>
+                    Vitamin C: ${result.product.nutriments["vitamin-c"]}
+                </p>
+            `)
+        })
+        .fail(function(error) {
+            console.log(error)
+        })
+    </script>
+</body>
+</html>
